@@ -1,0 +1,207 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>plastik-url-validator demo</title>
+  
+  <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Code+Pro" />
+  <link rel="import" href="../../polymer/polymer.html" />
+  <link rel="import" href="../../iron-input/iron-input.html" />
+  <link rel="import" href="../../paper-styles/paper-styles.html" />
+  <link rel="import" href="../plastik-url-validator.html" />
+    
+  <style is="custom-style">
+    html {
+      padding: 0;
+      margin: 0;
+    }
+    
+    body, input {
+      font: normal normal 400 14px RobotoDraft,Roboto,'Helvetica Neue',Helvetica,Arial,sans-serif;
+    }
+    
+    body {
+      background: #eee;
+      margin: 0;
+      padding: 8px 0;
+    }
+    
+    @media (max-width: 816px) {
+      body {
+        padding: 0;
+      }
+    }
+    
+    .container {
+      margin: auto;
+      max-width: 800px;
+      background: #fafafa;
+      box-shadow: 0 1.5px 4px rgba(0, 0, 0, 0.24), 0 1.5px 6px rgba(0, 0, 0, 0.12);
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      padding: 16px;
+    }
+    
+    h2 {
+      font-size: 24px;
+      font-weight: 300;
+    }
+    
+    h3 {
+      font-size: 16px;
+      font-weight: 400;
+    }
+    
+    hr {
+      border: none;
+      height: 1px;
+      background: rgba(0, 0, 0, .12);
+    }
+    
+    p, .nothing {
+      color: rgba(0, 0, 0, .54);
+    }
+    
+    html, body, p span {
+      color: rgba(0, 0, 0, .87);
+    }
+    
+    pre {
+      padding: 16px;
+      max-width: 832px;
+      white-space: pre-wrap;
+      font: normal normal 400 14px/16px 'Source Code Pro',Monaco,Menlo,Consolas,'Courier New',monospace;
+      background: #f5f5f5;
+    }
+    
+    .item-content {
+      padding: 16px;
+    }
+    
+    .item-header {
+      padding: 0 16px;
+    }
+    
+    .item-header {
+      height: 48px;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-align-items: center;
+      align-items: center;
+      font-size: 18px;
+    }
+    
+    .item-content {
+      font-size: 16px;
+      line-height: 18px;
+    }
+    
+    .valid {
+      color: green;
+    }
+    
+    .invalid {
+      color: red;
+    }
+    
+    input:not([type="checkbox"]) {
+      width: 100%;
+    }
+    
+    label, input {
+      padding: 4px;
+      margin: 6px 4px;
+    }
+  </style>
+
+</head>
+<body>
+
+  <template id="t" is="dom-bind">
+    
+    <div class="container">
+      
+    <h2>&lt;plastik-url-validator&gt; demo</h2>
+    
+    <hr>
+      
+      <plastik-url-validator protocol-optional="[[protocolOptional]]" protocols="[[parseArray(protocols)]]"
+        tld-optional="[[tldOptional]]" allow-underscores="[[allowUnderscores]]" host-whitelist="[[parseArray(hostWhitelist)]]"
+        host-blacklist="[[parseArray(hostBlacklist)]]" allow-trailing-dot="[[allowTrailingDot]]"
+        allow-protocol-relative-urls="[[allowProtocolRelativeURLs]]"></plastik-url-validator>
+      <div>
+        <label>Protocol is optional? <input type="checkbox" checked="{{protocolOptional::change}}"></label>
+      </div>
+      <div hidden$="[[!protocolOptional]]">
+        <label>Allow protocol relative URLs? <input type="checkbox" checked="{{allowProtocolRelativeURLs::change}}"></label>
+      </div>
+      <div hidden$="[[protocolOptional]]">
+        <label>Allowed protocols:</label> <input is="iron-input" bind-value="{{protocols}}">
+      </div>
+      <div>
+        <label>TLD is optional? <input type="checkbox" checked="{{tldOptional::change}}"></label>
+      </div>
+      <div>
+        <label>Allow underscores? <input type="checkbox" checked="{{allowUnderscores::change}}"></label>
+      </div>
+      <div>
+        <label>Host whitelist:</label> <input is="iron-input" bind-value="{{hostWhitelist}}">
+      </div>
+      <div>
+        <label>Host blacklist:</label> <input is="iron-input" bind-value="{{hostBlacklist}}">
+      </div>
+      <div>
+        <label>Allow trailing dot? <input type="checkbox" checked="{{allowTrailingDot::change}}"></label>
+      </div>
+      <div>
+        <label>Required? <input type="checkbox" checked="{{required::change}}"></label>
+      </div>
+      <div>
+        <label>Enter a URL:</label> <input is="iron-input" bind-value="{{input}}"
+          required$="[[required]]" validator="plastik-url-validator" invalid="{{inputInvalid}}">
+      </div>
+
+      <label class="valid" hidden$="[[inputInvalid]]">Valid data!</label>
+      <label class="invalid" hidden$="[[!inputInvalid]]">Invalid data.</label>
+     
+    </div>
+      
+  </template>
+
+  <script>
+    "use strict";
+    
+    var template = document.querySelector('#t');
+    
+    template.observers = [ 'revalidate(protocolOptional, protocols, tldOptional, allowUnderscores, hostWhitelist, ' +
+                           'hostBlacklist, allowTrailingDot, allowProtocolRelativeURLs, required, input)' ];
+    
+    template.parseArray = function(str) {
+      if (!str || typeof str !== 'string') {
+        return [];
+      }
+      return str.split(',');
+    };
+    
+    template.revalidate = function() {
+      (document.querySelector('input[validator]') ||
+        this.$$('input[validator]')).validate();
+    };
+    
+    document.addEventListener('WebComponentsReady', function() {
+      template.protocolOptional = false;
+      template.protocols = 'http,https';
+      template.tldOptional = false;
+      template.allowUnderscores = false;
+      template.hostWhitelist = '';
+      template.hostBlacklist = 'virusesrus.net,nastybaddies.biz';
+      template.allowTrailingDot = false;
+      template.allowProtocolRelativeURLs = false;    
+      template.required = true;
+      template.input = 'https://elements.polymer-project.org/elements/iron-input?view=demo:demo/index.html#polymerrules';
+    });
+    
+  </script>
+</body>
+</html>

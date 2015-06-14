@@ -1,0 +1,40 @@
+{
+  "name": "plastik-url-validator",
+  "version": "0.0.1",
+  "authors": [
+    "The Plastikit Authors <developers@plastikit.org>"
+  ],
+  "description": "URL validator for Polymer",
+  "keywords": [
+    "web-component",
+    "web-components",
+    "polymer",
+    "uri",
+    "uris",
+    "url",
+    "urls",
+    "addresses",
+    "validation",
+    "input"
+  ],
+  "main": "plastik-url-validator.html",
+  "license": "BSD-3-Clause",
+  "homepage": "https://github.com/Plastikit/plastik-url-validator/",
+  "ignore": [
+    "/.*",
+    "/test/",
+    "/demo/"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.0.0",
+    "iron-validator-behavior": "PolymerElements/iron-validator-behavior#^1.0.0",
+    "validator-js": "chriso/validator.js#^3.40.1"
+  },
+  "devDependencies": {
+    "iron-input": "PolymerElements/iron-input#^1.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "test-fixture": "PolymerElements/test-fixture#^1.0.0",
+    "web-component-tester": "*",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  }
+}

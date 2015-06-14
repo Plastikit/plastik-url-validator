@@ -1,0 +1,142 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-validator-behavior/iron-validator-behavior.html">
+<script src="../validator-js/validator.js"></script>
+
+<script>
+  /**
+   * `plastik-url-validator` checks whether or not any input is a valid URL.
+   * 
+   * This functionality is provided by the validator.js library, a dependency of this
+   * element.
+   * 
+   * ### Example
+   * 
+   * ```html
+   * <input is="iron-input" bind-value="{{value}}" validator="plastik-url-validator">
+   * 
+   * <plastik-url-validator protocol-optional allow-protocol-relative-urls>
+   * </plastik-url-validator>
+   * ```
+   * 
+   * @demo demo/index.html
+   * @polymerBehavior
+   */
+  Polymer({
+    is: 'plastik-url-validator',
+    
+    properties: {
+      /**
+       * Gets or sets which protocols to allow.
+       *
+       * @attribute protocols
+       * @type {array}
+       */
+      protocols: {
+        type: Array,
+        value: [ 'http', 'https' ]
+      },
+      /**
+       * Gets or sets whether or not a TLD is optional.
+       * 
+       * @attribute requireTld
+       * @type {boolean}
+       */
+      tldOptional: {
+        type: Boolean,
+        value: false
+      },
+      /**
+       * Gets or sets whether or not a protocol is optional. If true, `protocols` has
+       * no effect. If false, `allowProtocolRelativeUrls` has no effect.
+       * 
+       * @attribute requireProtocol
+       * @type {boolean}
+       */
+      protocolOptional: {
+        type: Boolean,
+        value: false
+      },
+      /**
+       * Gets or sets whether or not underscores are allowed.
+       * 
+       * @attribute allowUnderscores
+       * @type {boolean}
+       */
+      allowUnderscores: {
+        type: Boolean,
+        value: false
+      },
+      /**
+       * Gets or sets a list of hosts to whitelist.
+       * 
+       * @attribute hostWhitelist
+       * @type {array}
+       */
+      hostWhitelist: {
+        type: Array,
+        value: []
+      },
+      /**
+       * Gets or sets a list of hosts to blacklist.
+       * 
+       * @attribute hostBlacklist
+       * @type {array}
+       */
+      hostBlacklist: {
+        type: Array,
+        value: []
+      },
+      /**
+       * Gets or sets whether or not to allow trailing dots.
+       * 
+       * @attribute: allowTrailingDot
+       * @type {boolean}
+       */
+      allowTrailingDot: {
+        type: Boolean,
+        value: false
+      },
+      /**
+       * Gets or sets whether or not to allow protocol relative URLs.
+       * 
+       * @attribute allowProtocolRelativeUrls
+       * @type {boolean}
+       */
+      allowProtocolRelativeUrls: {
+        type: Boolean,
+        value: false
+      }
+    },
+    
+    behaviors: [
+      Polymer.IronValidatorBehavior
+    ],
+    
+    /**
+     * Validates input and returns whether or not it is a valid URL given
+     * the options set on the validator.
+     *
+     * @method validate
+     * @param {string} input The input to validate.
+     */
+    validate: function(input) {
+      if (input === null || typeof input === 'undefined') {
+        input = '';
+      } else if (typeof input !== 'string') {
+        console.warn((typeof input) + ' passed to URL validator.');
+        return false;
+      }
+      var options = {
+        protocols: this.protocols ? (this.protocols.length ? this.protocols : undefined) : undefined,
+        require_tld: !this.tldOptional,
+        require_protocol: !this.protocolOptional,
+        allow_underscores: this.allowUnderscores,
+        host_whitelist: this.hostWhitelist ? (this.hostWhitelist.length ? this.hostWhitelist : undefined) : undefined,
+        host_blacklist: this.hostBlacklist ? (this.hostBlacklist.length ? this.hostBlacklist : undefined) : undefined,
+        allow_trailing_dot: this.allowTrailingDot,
+        allow_protocol_relative_urls: this.allowProtocolRelativeUrls
+      };
+      return validator.isURL(input, options);
+    }
+  });
+</script>
