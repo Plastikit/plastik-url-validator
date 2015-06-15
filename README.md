@@ -7,7 +7,7 @@ This functionality is provided by the [validator.js](https://github.com/chriso/v
 library, a dependency of this element.
 
 Demos and documentation are available on the 
-[component page](http://www.plastikit.org/1.x/#!/components/plastik-url-validator/).
+[component page](http://www.plastikit.org/1.x/#!/components/plastik-url-validator).
 
 Pull requests are always welcome. If you encounter any bugs, please feel free to
 [submit an issue](https://github.com/Plastikit/plastik-url-validator/issues/new/).
@@ -20,7 +20,7 @@ bower install Plastikit/plastik-url-validator --save
 
 ## Basic usage
 
- > _See [component page](http://www.plastikit.org/1.x/#!/components/plastik-url-validator/)
+ > _See [component page](http://www.plastikit.org/1.x/#!/components/plastik-url-validator)
  > for more details._
 
 ### Example
