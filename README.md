@@ -15,7 +15,7 @@ Pull requests are always welcome. If you encounter any bugs, please feel free to
 ## Installation
 
 ```sh
-bower install Plastikit/plastik-url-validator --save
+bower install plastik-url-validator --save
 ```
 
 ## Basic usage
